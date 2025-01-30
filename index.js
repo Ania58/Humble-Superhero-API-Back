@@ -1,5 +1,5 @@
-import bodyParser from "body-parser";
-import express from "express";
+const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = 3000;
@@ -32,10 +32,12 @@ app.post("/superheroes", (req, res) => {
     const addSuperhero = { name, superpower, humilityScore: score };
 
     superheroes.push(addSuperhero);
-    res.status(201).json(superheroes)
+    res.status(201).json(addSuperhero)
 });
 
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 })
+
+module.exports = app;
