@@ -27,7 +27,24 @@ describe("Superhero API", () => {
       expect(response.body[0]).toHaveProperty("name", "Captain Humble");
       expect(response.body[0]).toHaveProperty("superpower", "Flying");
       expect(response.body[0]).toHaveProperty("humilityScore", 8);
-    })
+    });
+
+    it("should return superheroes sorted by humilityScore in descending order", async () => {
+      await request(app).post("/superheroes").send({ name: "Iron HumbleMan", superpower: "Mindreading", humilityScore: 5 });
+      await request(app).post("/superheroes").send({ name: "Black HumbleWidow", superpower: "Super strength", humilityScore: 10 });
+      await request(app).post("/superheroes").send({ name: "Humble Panther", superpower: "Invisibility", humilityScore: 7 });
+
+      const response = await request(app).get("/superheroes");
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(2); 
+
+      const scores = response.body.map(hero => hero.humilityScore);
+      const sortedScores = [...scores].sort((a, b) => b - a); 
+
+      expect(scores).toEqual(sortedScores); 
+  });
+
     it("should return 400 if a required field is missing", async () => {
       const response = await request(app)
           .post("/superheroes")

@@ -12,7 +12,7 @@ app.get("/superheroes", (req, res) => {
     if (superheroes.length === 0) {
         return res.status(200).json({ message: "No superheroes found." });
     }
-    const sortedSuperheroes = superheroes.sort((a,b) =>b.humilityScore - a.humilityScore)
+    const sortedSuperheroes = [...superheroes].sort((a,b) =>b.humilityScore - a.humilityScore)
     res.json(sortedSuperheroes);
 });
 
